@@ -13,6 +13,10 @@ class App extends Component {
     };
   }
 
+  removeNote(){
+    
+  }
+
   render() {
     return (
       <div className="notesContainer">
