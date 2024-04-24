@@ -10,7 +10,7 @@ class Note extends Component{
 
     handleRemove(id){
         console.log(id)
-        alert('remove',id)
+         
 
     }
 
@@ -18,8 +18,7 @@ class Note extends Component{
 render(){
     return(
     <div className="Note">
-        <span>
-            onClick={(this.handleRemove(this.noteId))}
+        <span onClick={this.handleRemove(this.noteId)}>
             &times;</span>
         <p>{this.noteContent}</p>
     </div>
