@@ -3,8 +3,8 @@ import './App.css';
 import Note from './Components/Note';
 import NoteForm from './Components/NoteForm/NoteForm.jsx';
 import firebase from 'firebase';
-import{DB_CONFIG} from'./config/config.js'
-import 'firebase/database'
+import 'firebase/database';
+import{DB_CONFIG} from'./config/config.js';
 
 class App extends Component {
   constructor() {
@@ -20,11 +20,13 @@ class App extends Component {
   this.db = this.app.database().ref().child('notes')
 
 
+
     this.addNote = this.addNote.bind(this)
+    this.removeNote = this.removeNote.bind(this)
   }
 
   componentDidMount(){
-    const {notes}=this.state;
+    const {notes}=this.state.notes;
     this.db.on('child_added',snap=>{
       notes.push({
         noteId: snap.key,
@@ -33,9 +35,17 @@ class App extends Component {
       this.setState({notes})
 
     })
+    this.db.pm('child_remove', snap =>{
+      for(let i= 0; i<notes.length; i++){
+        if(notes[i].noteId === snap.key){
+          notes.splice(i,i)
+        }
+      }
+      this.setState()
+    })
   }
-  removeNote(){
-    
+  removeNote(noteId){
+    this.db.child(noteId.remove())
   }
 
   addNote(note){
