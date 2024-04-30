@@ -17,9 +17,12 @@ class App extends Component {
     };
 
     if (!firebase.apps.length) {
-      this.app = firebase.initializeApp(DB_CONFIG)
-      this.db = this.app.database().ref().child('notes')
+      this.app = firebase.initializeApp({DB_CONFIG})
+    }else{
+      firebase.app()
     }
+
+    this.db = this.app.database().ref().child('notes')
 
 
 
