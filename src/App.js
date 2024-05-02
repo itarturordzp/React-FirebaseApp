@@ -12,7 +12,7 @@ class App extends Component {
     this.state = {
       notes: [
         //{ noteId: 1, noteContent: 'note 1' },
-        //{ noteId: 2, noteContent: 'note 2' }
+        //{ noteId: 2, noteContent: 'note 2 ' }
       ]
     };
 
@@ -21,7 +21,8 @@ class App extends Component {
     }else{
      this.app =firebase.app()
     }
-
+    
+    
     this.db = this.app.database().ref().child('notes')
 
 
@@ -32,14 +33,15 @@ class App extends Component {
 
   componentDidMount(){
     const {notes}=this.state;
+    
+    
     this.db.on('child_added',snap=>{
       notes.push({
         noteId: snap.key,
         noteContent: snap.val().noteContent
       })
-      this.setState({notes})
-
-    })
+      this.setState({notes});
+     })
     this.db.on('child_removed', snap =>{
       for(let i= 0; i<notes.length; i++){
         if(notes[i].noteId === snap.key){
@@ -50,16 +52,11 @@ class App extends Component {
     })
   }
   removeNote(noteId){
-    this.db.child(noteId.remove())
+    this.db.child(noteId).remove()
   }
 
   addNote(note){
-    //let {notes} = this.state
-    //notes.push({
-      //noteId: note.length +1 ,
-      //noteContent: note
-    //})
-  //this.setState({notes})
+   
    this.db.push().set({noteContent: note})
 
   }
@@ -82,8 +79,9 @@ class App extends Component {
                 <Note
                 noteContent={note.noteContent}
                 noteId={note.noteId}
-                key={note.noteId} />
-              );
+                key={note.noteId} 
+                removeNote={this.removeNote}
+                />);
             })}
           </ul>
         </div>
