@@ -17,7 +17,7 @@ class App extends Component {
     };
 
     if (!firebase.apps.length) {
-      this.app = firebase.initializeApp({DB_CONFIG})
+      this.app = firebase.initializeApp(DB_CONFIG)
     }else{
      this.app =firebase.app()
     }
@@ -31,7 +31,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    const {notes}=this.state.notes;
+    const {notes}=this.state;
     this.db.on('child_added',snap=>{
       notes.push({
         noteId: snap.key,
@@ -40,13 +40,13 @@ class App extends Component {
       this.setState({notes})
 
     })
-    this.db.pm('child_remove', snap =>{
+    this.db.on('child_removed', snap =>{
       for(let i= 0; i<notes.length; i++){
         if(notes[i].noteId === snap.key){
-          notes.splice(i,i)
+          notes.splice(i,1)
         }
       }
-      this.setState()
+      this.setState({notes})
     })
   }
   removeNote(noteId){
